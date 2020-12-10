@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author: znegyu
  * @create: 2020-11-28 09:06
  **/
-@Component
+//@Component
 public class JwtInterceptor implements HandlerInterceptor {
 
     @Resource

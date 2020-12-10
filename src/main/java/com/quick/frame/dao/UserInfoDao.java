@@ -22,4 +22,6 @@ public interface UserInfoDao extends BaseMapper<UserInfo> {
     @Select("select * from user_info where account_number=#{accountNumber}")
     UserInfo getUserInfoInAccountNumber(String accountNumber);
 
+
+
 }

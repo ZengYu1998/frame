@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @author: znegyu
  * @create: 2020-11-28 09:19
  **/
-@Configuration
+//@Configuration
 public class InterceptorConfig extends WebMvcConfigurationSupport {
 
     @Resource

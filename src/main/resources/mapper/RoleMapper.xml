@@ -17,4 +17,12 @@
         id, role_name, description, is_delete, create_time, update_time
     </sql>
 
+    <select id="getRoleListInAccountNumber" resultMap="BaseResultMap">
+        select * from role where id in(
+            select b.role_id from
+                user_info a join user_role b on a.id=b.user_id
+            where a.account_number=#{accountNumber}
+        )
+    </select>
+
 </mapper>
