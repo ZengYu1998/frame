@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8100
+
+project:
+  describe:
+    name: 快速开发框架
+  jwt:
+    EXPIRE_TIME: 3 #Token过期时间,按小时算
+    SECRET: 1231dasda    #Token加密密钥
+    ISSUER: zengyu       #Token发布人
