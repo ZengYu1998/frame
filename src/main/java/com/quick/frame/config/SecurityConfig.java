@@ -1,6 +1,7 @@
 package com.quick.frame.config;
 
 import com.quick.frame.config.filter.JwtFilter;
+import com.quick.frame.config.filter.ExceptionHandlerFilter;
 import com.quick.frame.config.security.FailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JwtFilter jwtFilter;
     @Resource
+    private ExceptionHandlerFilter exceptionHandlerFilter;
+    @Resource
     private UserDetailsService userDetailsService;
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -45,18 +48,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private FailureHandler failureHandler;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).
-                csrf().disable()
-                //所有请求都要认证
-                .authorizeRequests()
-                //放开登录接口
-                .antMatchers("/api/userInfo/login").permitAll()
-                .antMatchers(AUTH_LIST).permitAll()
-                //自定义访问规则
-                .anyRequest().access("@rbacService.hasPermission(request,authentication)")
-                //去除session
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().exceptionHandling().accessDeniedHandler(failureHandler).authenticationEntryPoint(failureHandler);
+        http.//添加异常铺抓Failure为首个Failure,这样才能捕获所有的Failure链里的异常
+            addFilterBefore(exceptionHandlerFilter,UsernamePasswordAuthenticationFilter.class)
+            //添加jwt过滤器
+            .addFilterAt(jwtFilter,UsernamePasswordAuthenticationFilter.class)
+            .csrf().disable()
+            //所有请求都要认证
+            .authorizeRequests()
+            //放开登录接口
+            .antMatchers("/api/userInfo/login").permitAll()
+            .antMatchers(AUTH_LIST).permitAll()
+            //自定义访问规则
+            .anyRequest().access("@rbacService.hasPermission(request,authentication)")
+            //去除session
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().exceptionHandling().accessDeniedHandler(failureHandler).authenticationEntryPoint(failureHandler);
     }
 
     @Override

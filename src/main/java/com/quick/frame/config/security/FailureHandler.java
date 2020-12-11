@@ -1,5 +1,6 @@
 package com.quick.frame.config.security;
 
+import com.quick.frame.commons.other.DefaultAuthenticationException;
 import com.quick.frame.commons.result.Tip;
 import com.quick.frame.commons.util.ServletUtils;
 import org.springframework.security.access.AccessDeniedException;
@@ -31,12 +32,12 @@ public class FailureHandler implements AuthenticationEntryPoint,AccessDeniedHand
      * @throws ServletException -ServletException
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, DefaultAuthenticationException {
         ServletUtils.render(request,response,new Tip(403,e.getMessage()));
     }
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, DefaultAuthenticationException {
         ServletUtils.render(request,response,new Tip(405,e.getMessage()));
     }
 }

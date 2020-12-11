@@ -6,6 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.quick.frame.commons.other.DefaultAuthenticationException;
 import com.quick.frame.commons.other.ServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,12 +55,7 @@ public class JwtUtil {
         if(uniqueIdentifier==null || uniqueIdentifier.trim().equals("")){
             throw new ServiceException(1000,"无法获取用户唯一标识信息!");
         }
-        Algorithm algorithm = null;  //使用HMAC256算法生成签名
-        try {
-            algorithm = Algorithm.HMAC256(SECRET);
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedOperationException("签名生成失败("+e.getMessage()+")");
-        }
+        Algorithm algorithm = getAlgorithm();
         //创建和签名令牌的Token构建器
         String token = JWT.create()
                 .withIssuer(ISSUER) //设置发布者
@@ -85,71 +81,48 @@ public class JwtUtil {
     /**
      * 校验token
      * @param token 要校验的Token
-     * @param isFilter 是否是在Filter中认证 true-是 false-否
-     * @return -Map key1:success 布尔值:true 校验成功 false 校验失败 key2: data 校验成功时 返回用户唯一标识符 校验失败时 返回失败信息
+     * @return -校验成功时 返回用户唯一标识符
      */
-    public Map<String,Object> verify(String token,boolean isFilter){
-        Map<String,Object> result=new HashMap<>();
-        try {
-            Algorithm algorithm = null; //使用HMAC256算法生成签名
-            try {
-                algorithm = Algorithm.HMAC256(SECRET);
-            } catch (UnsupportedEncodingException e) {
-                if(isFilter)  {
-                    result.put("success",false);
-                    result.put("data","签名生成失败("+e.getMessage()+")");
-                    return result;
-                }
-                throw new UnsupportedOperationException("签名生成失败("+e.getMessage()+")");
-            }
+    public String verify(String token){
+            Algorithm algorithm = getAlgorithm();
             //创建带有用于验证令牌签名的算法的构建器
             JWTVerifier verifier = JWT.require(algorithm) //设置签名
                     .build();
             //验证 token
-            DecodedJWT jwt =verifier.verify(token);
-            //验证通过后获取用户唯一标识符
+
+        DecodedJWT jwt = null;
+        try {
+            jwt = verifier.verify(token);
+        } catch (JWTVerificationException e) {
+            throw new DefaultAuthenticationException(1000,"token不正確!");
+        }
+        //验证通过后获取用户唯一标识符
             String uniqueIdentifier= jwt.getClaims().get("uniqueIdentifier").asString();
             if(uniqueIdentifier==null || uniqueIdentifier.trim().equals("")){
-                if(isFilter)  {
-                    result.put("success",false);
-                    result.put("data","签名生成失败(token验证失败!无法获取用户唯一标识符!");
-                    return result;
-                }
-                throw new ServiceException(1000,"token验证失败!无法获取用户唯一标识符!");
+                throw new DefaultAuthenticationException(1000,"token验证失败!无法获取用户唯一标识符!");
             }
             //通过redis判断是否过期
             String tokenRedis = (String) redisTemplate.opsForValue().get(uniqueIdentifier);
             if(tokenRedis==null){
-                if(isFilter) {
-                    result.put("success",false);
-                    result.put("data", "登录失效,请重新登录!");
-                    return result;
-                }
-                throw new ServiceException(1000,"登录失效,请重新登录!");//token过期
+                throw new DefaultAuthenticationException(1000,"登录失效,请重新登录!");//token过期
             }
             if(!token.equals(tokenRedis)){
-                if(isFilter){
-                    result.put("success",false);
-                    result.put("data", "账号在其他地方登录!请尝试更改密码或重新登录!");
-                    return result;
-                }
-                throw new ServiceException(1000,"账号在其他地方登录!请尝试更改密码或重新登录!");
+                throw new DefaultAuthenticationException(1000,"账号在其他地方登录!请尝试更改密码或重新登录!");
             }
-            result.put("success",true);
-            result.put("data", uniqueIdentifier);
-            return result;
-        } catch (JWTVerificationException exception) {
-            if(isFilter)  {
-                result.put("success",false);
-                result.put("data", "token验证失败("+exception.getMessage()+")");
-                return result;
-            }
-            throw new JWTVerificationException("token验证失败("+exception.getMessage()+")");
-        }
+            return uniqueIdentifier;
     }
 
-
-
-
-
+    /**
+     * 获取签名
+     * @return 签名对象
+     */
+    private Algorithm getAlgorithm(){
+        Algorithm algorithm = null; //使用HMAC256算法生成签名
+        try {
+            algorithm = Algorithm.HMAC256(SECRET);
+            return  algorithm;
+        } catch (UnsupportedEncodingException e) {
+            throw new DefaultAuthenticationException(1000,"签名生成失败("+e.getMessage()+")");
+        }
+    }
 }

@@ -39,11 +39,8 @@ public class JwtFilter extends OncePerRequestFilter {
         if(jwtToken!=null && !jwtToken.trim().equals("")){
             //throw new ServiceException(1000,"您尚未登录!请先登录!");
             //校验token的正确性并获取用户唯一标识符(这里的唯一标识符就是用户的账号)
-            String accountNumber= "";
-            Map<String, Object> verify = jwtUtil.verify(jwtToken,true);
-            if((boolean)verify.get("success")) accountNumber=verify.get("data").toString();
-            else
-                ServletUtils.render(request,response,new Tip(1000,verify.get("data").toString()));
+
+            String accountNumber= jwtUtil.verify(jwtToken);
             //SecurityContextHolder 中保存的是当前访问者的信息
             //登录用户没有认证时，先进行认证
             if(SecurityContextHolder.getContext().getAuthentication()==null){
