@@ -62,12 +62,12 @@ public class BootTest {
 
     @Test
     void test_3() {
-            System.out.println(jwtUtil.createToken("1234"));
+           // System.out.println(jwtUtil.createToken("1234"));
     }
 
     @Test
     void test_4(){
-        jwtUtil.verify("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ6ZW5neXUiLCJ1c2VySWQiOiIxMjM0IiwiaWF0IjoxNjA2MzczNzY3fQ.n-HeTEE0hjlclm2DzGEpBlfJdLikh4z0CjMO_AABBuA");
+        //jwtUtil.verify("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ6ZW5neXUiLCJ1c2VySWQiOiIxMjM0IiwiaWF0IjoxNjA2MzczNzY3fQ.n-HeTEE0hjlclm2DzGEpBlfJdLikh4z0CjMO_AABBuA");
     }
 
     @Test

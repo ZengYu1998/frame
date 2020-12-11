@@ -44,3 +44,4 @@ public class GlobalExceptionHandlerConfig {
         return new Tip(500,e.getMessage());
     }
 }
+

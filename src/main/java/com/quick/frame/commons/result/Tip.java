@@ -8,10 +8,13 @@ import lombok.Data;
  * @create: 2020-11-28 10:50
  **/
 @Data
-
 public class Tip {
     protected int code;
     protected String message;
+
+    public Tip() {
+
+    }
 
     public Tip(boolean flag) {
         if (flag) {

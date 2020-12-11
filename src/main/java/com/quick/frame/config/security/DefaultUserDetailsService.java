@@ -1,6 +1,5 @@
 package com.quick.frame.config.security;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.quick.frame.dao.PermissionDao;
 import com.quick.frame.dao.RoleDao;
 import com.quick.frame.dao.UserInfoDao;

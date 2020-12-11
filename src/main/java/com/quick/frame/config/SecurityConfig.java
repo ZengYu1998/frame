@@ -1,12 +1,18 @@
 package com.quick.frame.config;
 
+import com.quick.frame.config.filter.JwtFilter;
+import com.quick.frame.config.security.FailureHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 
@@ -19,21 +25,47 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_LIST = {
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/doc.html"
+    };
+
+    @Resource
+    private JwtFilter jwtFilter;
     @Resource
     private UserDetailsService userDetailsService;
+    @Resource
+    private PasswordEncoder passwordEncoder;
+    @Resource
+    private FailureHandler failureHandler;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).
+                csrf().disable()
                 //所有请求都要认证
                 .authorizeRequests()
                 //放开登录接口
-                .antMatchers("/login").permitAll()
+                .antMatchers("/api/userInfo/login").permitAll()
+                .antMatchers(AUTH_LIST).permitAll()
                 //自定义访问规则
-                .anyRequest().access("@rbacService.hasPermission(request,authentication)");
+                .anyRequest().access("@rbacService.hasPermission(request,authentication)")
+                //去除session
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().exceptionHandling().accessDeniedHandler(failureHandler).authenticationEntryPoint(failureHandler);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 }

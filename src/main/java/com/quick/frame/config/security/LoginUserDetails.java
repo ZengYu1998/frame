@@ -33,22 +33,6 @@ public class LoginUserDetails implements UserDetails {
         this.authorities=authorities;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return userInfo.getLoginPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return userInfo.getUserName();
-    }
-
-
     /**
      * 账户是否未过期，过期无法验证。(这里直接返回true,不用校验,项目用不上)
      */
@@ -83,5 +67,21 @@ public class LoginUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return userInfo.getLoginPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return userInfo.getAccountNumber();
     }
 }
