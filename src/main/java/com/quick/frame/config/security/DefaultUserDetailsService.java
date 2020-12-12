@@ -6,10 +6,14 @@ import com.quick.frame.dao.UserInfoDao;
 import com.quick.frame.entity.Permission;
 import com.quick.frame.entity.Role;
 import com.quick.frame.entity.UserInfo;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -39,6 +43,8 @@ public class DefaultUserDetailsService implements UserDetailsService {
      * @throws UsernameNotFoundException -用户不存在
      */
     @Override
+    //将认证授权信息加入Redis缓存,减少重复访问数据库次数
+    @Cacheable(value = "UserDetailsCache",key = "#accountNumber")
     public UserDetails loadUserByUsername(String accountNumber) throws UsernameNotFoundException {
         //1.获取用户信息
         if(accountNumber==null || accountNumber.trim().equals(""))

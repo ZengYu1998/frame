@@ -35,11 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //先获取请求头中的token
-        String jwtToken=request.getHeader("jwtToken");
+        String jwtToken=request.getHeader("Authorization");
         if(jwtToken!=null && !jwtToken.trim().equals("")){
-            //throw new ServiceException(1000,"您尚未登录!请先登录!");
             //校验token的正确性并获取用户唯一标识符(这里的唯一标识符就是用户的账号)
-
             String accountNumber= jwtUtil.verify(jwtToken);
             //SecurityContextHolder 中保存的是当前访问者的信息
             //登录用户没有认证时，先进行认证
@@ -52,7 +50,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-
         filterChain.doFilter(request,response);
     }
 }

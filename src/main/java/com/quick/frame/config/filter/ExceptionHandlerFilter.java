@@ -29,7 +29,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             if(e instanceof DefaultAuthenticationException)
                 ServletUtils.render(request,response,new Tip(1000,e.getMessage()));
             else
-                ServletUtils.render(request,response,new Tip(500,e.getMessage()));
+                ServletUtils.render(request,response,new Tip(403,e.getMessage()));
         }
     }
 }

@@ -2,7 +2,6 @@ package com.quick.frame.config;
 
 import com.quick.frame.config.filter.JwtFilter;
 import com.quick.frame.config.filter.ExceptionHandlerFilter;
-import com.quick.frame.config.security.FailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,14 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Resource
     private PasswordEncoder passwordEncoder;
-    @Resource
-    private FailureHandler failureHandler;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.//添加异常铺抓Failure为首个Failure,这样才能捕获所有的Failure链里的异常
-            addFilterBefore(exceptionHandlerFilter,UsernamePasswordAuthenticationFilter.class)
+        http
             //添加jwt过滤器
-            .addFilterAt(jwtFilter,UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class)
+            //添加异常铺抓Failure为首个Failure,这样才能捕获所有的Failure链里的异常
+            .addFilterBefore(exceptionHandlerFilter,jwtFilter.getClass())
             .csrf().disable()
             //所有请求都要认证
             .authorizeRequests()
@@ -61,8 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //自定义访问规则
             .anyRequest().access("@rbacService.hasPermission(request,authentication)")
             //去除session
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().exceptionHandling().accessDeniedHandler(failureHandler).authenticationEntryPoint(failureHandler);
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override

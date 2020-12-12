@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +45,8 @@ public class JwtUtil {
     @Resource
     private RedisTemplate<String,Object> redisTemplate;
 
-
+    @Resource
+    private HttpServletRequest request;
     /**
      * 创建加密Token
      * @param uniqueIdentifier -唯一用户标识符
@@ -67,7 +69,7 @@ public class JwtUtil {
                 //指定算法进行签名
                 .sign(algorithm);
         //将Token放在Redis上,并设置到期时间
-        redisTemplate.opsForValue().set(uniqueIdentifier,token,EXPIRE_TIME, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set("JWTCache::"+uniqueIdentifier,token,EXPIRE_TIME, TimeUnit.HOURS);
         return token;
     }
 
@@ -89,7 +91,6 @@ public class JwtUtil {
             JWTVerifier verifier = JWT.require(algorithm) //设置签名
                     .build();
             //验证 token
-
         DecodedJWT jwt = null;
         try {
             jwt = verifier.verify(token);
@@ -102,7 +103,7 @@ public class JwtUtil {
                 throw new DefaultAuthenticationException(1000,"token验证失败!无法获取用户唯一标识符!");
             }
             //通过redis判断是否过期
-            String tokenRedis = (String) redisTemplate.opsForValue().get(uniqueIdentifier);
+            String tokenRedis = (String) redisTemplate.opsForValue().get("JWTCache::"+uniqueIdentifier);
             if(tokenRedis==null){
                 throw new DefaultAuthenticationException(1000,"登录失效,请重新登录!");//token过期
             }
@@ -124,5 +125,15 @@ public class JwtUtil {
         } catch (UnsupportedEncodingException e) {
             throw new DefaultAuthenticationException(1000,"签名生成失败("+e.getMessage()+")");
         }
+    }
+
+    /**
+     * 获取用户唯一标识符
+     * @return -用户唯一标识符
+     */
+    public String getUniqueIdentifier(){
+        String token=request.getHeader("Authorization");
+        String uniqueIdentifier=verify(token);
+        return uniqueIdentifier;
     }
 }

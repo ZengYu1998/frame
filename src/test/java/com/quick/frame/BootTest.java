@@ -72,22 +72,27 @@ public class BootTest {
 
     @Test
     void name() {
+        UserInfo userInfo =new UserInfo();
+        userInfo.setAccountNumber("13030106617");
+        userInfo.setLoginPassword("123456");
+        userInfo.setUserName("曾煜2号");
+        //userInfoDao.insert(userInfo);
         UserInfo userInfoInAccountNumber = userInfoDao.getUserInfoInAccountNumber("13232094481");
         Role role =new Role();
         role.setRoleName("admin");
         role.setDescription("超级管理员");
         //roleDao.insert(role);
         UserRole userRole=new UserRole();
-        userRole.setUserId("26199146da0d8b40fc172fef9a432b31");
+        userRole.setUserId("a3c3ac610fba75d38b0bafd5bfe519bc");
         userRole.setRoleId("3beb19711a5785f7f5891c73484c7056");
-       // userRoleDao.insert(userRole);
+        userRoleDao.insert(userRole);
         Permission permission=new Permission();
         permission.setPermissionName("/test_1");
         permission.setDescription("访问test_1接口的权限");
         //permissionDao.insert(permission);
         permission.setId(null);
-        permission.setPermissionName("/test_2");
-        permission.setDescription("访问test_2接口的权限");
+        permission.setPermissionName("/api/userRole/addRoleToUser");
+        permission.setDescription("为用户添加角色的权限");
         //permissionDao.insert(permission);
         permission.setId(null);
         permission.setPermissionName("/test");
@@ -95,14 +100,14 @@ public class BootTest {
         //permissionDao.insert(permission)
         RolePermission rolePermission=new RolePermission();
         rolePermission.setRoleId("3beb19711a5785f7f5891c73484c7056");
-        rolePermission.setPermissionId("06b72652a29e0dcbb5b26ae8abe70ddd");
-        rolePermissionDao.insert(rolePermission);
+        rolePermission.setPermissionId("4596e87b5a9c2012f897c18470938b1f");
+        //rolePermissionDao.insert(rolePermission);
         rolePermission.setId(null);
         rolePermission.setPermissionId("47470214997c3b531f7ba6afe36ab727");
-        rolePermissionDao.insert(rolePermission);
+        //rolePermissionDao.insert(rolePermission);
         rolePermission.setId(null);
         rolePermission.setPermissionId("ea7034e0136e1722ea4e0eacc3244f5c");
-        rolePermissionDao.insert(rolePermission);
+        //rolePermissionDao.insert(rolePermission);
 //        UserInfo userInfo=new UserInfo();
 //        userInfo.setAccountNumber("13232094481");
 //        userInfo.setUserName("曾煜");
