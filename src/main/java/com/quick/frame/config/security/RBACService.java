@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Component("rbacService")
 public class RBACService {
-
     /**
      * 自定义权限匹配规则
      * @param request -当前请求

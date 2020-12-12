@@ -2,6 +2,7 @@ package com.quick.frame.service.impl;
 
 import com.quick.frame.commons.other.ServiceException;
 import com.quick.frame.commons.result.ResponseTip;
+import com.quick.frame.commons.result.Tip;
 import com.quick.frame.commons.util.JwtUtil;
 import com.quick.frame.config.security.LoginBean;
 import com.quick.frame.entity.UserInfo;
@@ -46,5 +47,31 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfo> impl
         String token= jwtUtil.createToken(loginBean.getAccountNumber());
         ResponseTip<String> stringResponseTip = new ResponseTip<>(200, "登录认证成功!", token);
         return stringResponseTip;
+    }
+
+    @Override
+    public Tip addUser() {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserName("正常");
+        userInfo.setAccountNumber("5566");
+        userInfo.setLoginPassword("123456");
+        save(userInfo);
+        userInfo.setId(null);
+        userInfo.setUserName("errorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerror");
+        save(userInfo);
+        return new Tip(200,"添加用户成功!");
+    }
+
+    @Override
+    public Tip asdfadas() {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserName("正常");
+        userInfo.setAccountNumber("5566");
+        userInfo.setLoginPassword("123456");
+        save(userInfo);
+        userInfo.setId(null);
+        userInfo.setUserName("errorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerror");
+        save(userInfo);
+        return new Tip(200,"添加用户成功!");
     }
 }
