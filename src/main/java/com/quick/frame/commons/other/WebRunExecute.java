@@ -32,10 +32,12 @@ public class WebRunExecute implements CommandLineRunner {
     public void run(String... args) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("\r\n======================================================================\r\n");
-        sb.append("\r\n    欢迎使用：  " + projectName + "  ");
+        sb.append("\r\n    欢迎使用：      " + projectName + "  ");
         sb.append("\r\n    项目启动成功：  " + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date()) + "  ");
         sb.append("\r\n    项目运行环境：  " + active + "  ");
-        sb.append("\r\n    后端地址：   http://localhost:" + port + contextPath +"/doc.html  ");
+        sb.append("\r\n    后端地址：    http://localhost:" + port + contextPath +"/doc.html  ");
+        sb.append("\r\n    Druid地址：  http://localhost:" + port + contextPath +"/druid  ");
+        sb.append("\r\n    Druid       账号:admin  密码:123456");
         sb.append("\r\n======================================================================\r\n");
         System.out.println(sb.toString());
     }

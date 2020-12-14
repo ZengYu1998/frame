@@ -1,8 +1,11 @@
 package com.quick.frame.commons.result;
 
-import lombok.Data;
 
 public enum ResultCode {
+
+    /**
+     * 权限
+     */
 
     OPERATION_FAILED(400,"操作失败");
 
