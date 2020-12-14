@@ -17,9 +17,30 @@
     <name>frame</name>
     <description>快速开发框架</description>
 
-    <!--指定Java版本-->
+    <!--jar版本控制-->
     <properties>
+        <!--jdk版本-->
         <java.version>1.8</java.version>
+        <!--redis所需连接池-->
+        <commons-pool2.version>2.6.2</commons-pool2.version>
+        <!--jwt工具-->
+        <auth0.version>3.2.0</auth0.version>
+        <!--swagger2-->
+        <swagger2.version>2.9.2</swagger2.version>
+        <!--swagger2美化-->
+        <swagger2-bui.version>2.0.5</swagger2-bui.version>
+        <!--阿里json工具-->
+        <fastjson.version>1.2.73</fastjson.version>
+        <!--mybatis-plus-->
+        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <!--mybatis-plus模板-->
+        <mybatis-plus-velocity.version>2.2</mybatis-plus-velocity.version>
+        <!--SQL打印分析-->
+        <p6spy.version>3.9.1</p6spy.version>
+        <!--阿里德鲁伊-->
+        <druid.version>1.1.22</druid.version>
+        <!--请求分析工具-->
+        <user-agent.version>1.20</user-agent.version>
     </properties>
 
     <dependencies>
@@ -61,7 +82,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.6.2</version>
+            <version>${commons-pool2.version}</version>
         </dependency>
         <!--缓存依赖-->
         <dependency>
@@ -77,49 +98,49 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.2.0</version>
+            <version>${auth0.version}</version>
         </dependency>
         <!--swagger依赖-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
+            <version>${swagger2.version}</version>
         </dependency>
         <!--swagger界面美化-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>2.0.5</version>
+            <version>${swagger2-bui.version}</version>
         </dependency>
         <!--swagger默认ui-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <version>${swagger2.version}</version>
         </dependency>
         <!-- 阿里json依赖 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.73</version>
+            <version>${fastjson.version}</version>
         </dependency>
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.3.2</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
         <!-- mybatis-plus代码生成器 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.3.2</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
         <!-- mybatis-plus模板引擎 -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
-            <version>2.2</version>
+            <version>${mybatis-plus-velocity.version}</version>
         </dependency>
         <!--MySql连接所需包 -->
         <dependency>
@@ -131,19 +152,19 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.22</version>
+            <version>${druid.version}</version>
         </dependency>
         <!-- sql 分析打印工具 -->
         <dependency>
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
-            <version>3.9.1</version>
+            <version>${p6spy.version}</version>
         </dependency>
         <!--解析 User-Agent 字符串的 Java 类库-->
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
-            <version>1.20</version>
+            <version>${user-agent.version}</version>
         </dependency>
 
     </dependencies>

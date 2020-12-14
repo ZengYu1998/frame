@@ -15,12 +15,14 @@ spring:
         max-idle: 8    #Redis 连接池中的最大空闲连接
         min-idle: 0    #Redis 连接池中的最小空闲连接
   ################ Redis 基础配置完毕 ##############
+
+  ################ 数据库 连接配置 ##############
   datasource:
-    url: jdbc:mysql://47.106.218.109:3306/frame?useUnicode=true&characterEncoding=utf8
-    username: zy
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://47.106.218.109:3306/frame?useUnicode=true&characterEncoding=utf8 #连接地址
+    username: zy     #连接用户名 一般为 root
+    password: 123456 #连接密码
+    driver-class-name: com.mysql.cj.jdbc.Driver #连接驱动
+    type: com.alibaba.druid.pool.DruidDataSource #连接池数据源 (这里使用德鲁伊 提供可视化界面)
     druid:
       #数据源其他配置
       #初始化时建立物理连接的个数
@@ -53,7 +55,7 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
       use-global-data-source-stat: true
       connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-
+  ################ 数据库 连接配置完毕 ##############
 
 ## 服务器 配置
 server:

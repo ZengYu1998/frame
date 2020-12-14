@@ -1,3 +1,4 @@
+## 不要用于正式环境 因为使用了p6spy，有性能损耗
 ## Spring 配置
 spring:
   ################ Redis 基础配置 ##############
@@ -15,11 +16,14 @@ spring:
         max-idle: 8    #Redis 连接池中的最大空闲连接
         min-idle: 0    #Redis 连接池中的最小空闲连接
   ################ Redis 基础配置完毕 ##############
+
+  ################ 数据库 连接配置 ##############
   datasource:
-    url: jdbc:p6spy:mysql://47.106.218.109:3306/frame?useUnicode=true&characterEncoding=utf8
-    username: zy
-    password: 123456
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://47.106.218.109:3306/frame?useUnicode=true&characterEncoding=utf8 #连接地址
+    username: zy     #连接用户名 一般为 root
+    password: 123456 #连接密码
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver #连接驱动 (这里用p6spy -其配置文件为 spy.properties) 能够完全打印sql显示执行时间,方便调试
+  ################ 数据库 连接配置完毕 ##############
 
 ## 服务器 配置
 server:
