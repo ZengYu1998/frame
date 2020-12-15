@@ -1,4 +1,4 @@
-package frame.config;
+package com.quick.frame.config;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
