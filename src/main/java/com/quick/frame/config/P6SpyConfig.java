@@ -1,7 +1,8 @@
-package com.quick.frame.config;
+package frame.config;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
+import com.quick.frame.commons.util.SQLFormatter;
 
 /**
  * @description: SQL分析打印工具(不能用于生产环境)
@@ -10,8 +11,9 @@ import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
  **/
 public class P6SpyConfig implements MessageFormattingStrategy {
     public String formatMessage(int connectionId, String now, long elapsed, String category, String prepared, String sql, String url) {
+        String sql_format=new SQLFormatter().format(sql);
         return StringUtils.isNotBlank(sql) ? " 执行SQL消耗时间：" +
-                elapsed + " 毫秒 " + "执行时间: "+ now + "\n 执行的 SQL 语句：" + "\n "+
-                sql.replaceAll("[\\s]+", " ") + "\n" : "";
+                elapsed + " 毫秒 " + "执行时间: "+ now + "\n 执行的 SQL 语句："+
+                sql_format + "\n" : "";
     }
 }
